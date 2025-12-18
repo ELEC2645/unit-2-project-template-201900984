@@ -22,6 +22,9 @@ void menu_item_4(void);
 void menu_item_5(void);
 void menu_item_6(void);
 void menu_item_7(void);
+void menu_item_8(void);
+void menu_item_9(void);
+void menu_item_10(void);
 
 void top_menu(void);
 void print_top_menu(void);
