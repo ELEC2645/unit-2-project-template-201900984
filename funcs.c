@@ -4,7 +4,7 @@
 static double current = 0.0;
 
 /* Flush leftover input */
-void flush_input_buffer(void) {
+static void flush_input_buffer(void) {
     int ch;
     while ((ch = getchar()) != '\n' && ch != EOF) {}
 }
@@ -244,8 +244,174 @@ void print_top_menu(void) {
 void select_top_menu_item(int input) {
     switch (input) {
         case 1: calculator_menu(); break;
-        case 2: printf("Conversion\n"); break;
+        case 2: conversion_menu(); break;
         case 3: printf("Exiting program...\n"); exit(0);
         default: printf("Invalid selection.\n"); break;
     }
+}
+
+// --------------- Conversion Menu ---------------
+
+typedef struct {
+    const char *unit_print_name;   /* e.g. "mV" */
+    double factor_to_base;         /* multiply by this to convert to base unit */
+} unit_option;
+
+static void run_unit_converter(const char *title,
+                               const unit_option *unit_list,
+                               int unit_count)
+{
+    while (1) {
+        printf("\n%s\n", title);
+        display_current();
+
+        printf("\nFrom:\n");
+        for (int i = 0; i < unit_count; i++) {
+            printf("%d. %s\n", i + 1, unit_list[i].unit_print_name);
+        }
+        printf("%d. Go Back\n", unit_count + 1);
+
+        int from = get_user_input(unit_count + 1);
+        if (from == unit_count + 1) return;
+
+        printf("\nTo:\n");
+        for (int i = 0; i < unit_count; i++) {
+            printf("%d. %s\n", i + 1, unit_list[i].unit_print_name);
+        }
+        printf("%d. Go Back\n", unit_count + 1);
+
+        int to = get_user_input(unit_count + 1);
+        if (to == unit_count + 1) return;
+
+        double value = get_number("Enter value: ");
+
+        /* Convert: value -> base -> target */
+        double base_value = value * unit_list[from - 1].factor_to_base;
+        double result = base_value / unit_list[to - 1].factor_to_base;
+
+        printf("\n%.15g %s = %.15g %s\n",
+               value, unit_list[from - 1].unit_print_name,
+               result, unit_list[to - 1].unit_print_name);
+    }
+}
+
+void conversion_menu(void) {
+    print_conversion_menu();
+    int input = get_user_input(8);
+    select_conversion_item(input);
+}
+
+void print_conversion_menu(void) {
+    display_current();
+    printf("\n----------- Conversion -----------\n");
+    printf("|\t1. Voltage\t\t|\n");
+    printf("|\t2. Current\t\t|\n");
+    printf("|\t3. Resistance\t\t|\n");
+    printf("|\t4. Capacitance\t\t|\n");
+    printf("|\t5. Inductance\t\t|\n");
+    printf("|\t6. Frequency\t\t|\n");
+    printf("|\t7. Power\t\t|\n");
+    printf("|\t8. Go Back\t\t|\n");
+    printf("---------------------------------\n");
+}
+
+void select_conversion_item(int input) {
+    switch (input) {
+        case 1: voltage_conversion(); break;
+        case 2: current_conversion(); break;
+        case 3: resistance_conversion(); break;
+        case 4: capacitance_conversion(); break;
+        case 5: inductance_conversion(); break;
+        case 6: frequency_conversion(); break;
+        case 7: power_conversion(); break;
+        case 8: top_menu();
+        default: printf("Invalid selection. Exiting...\n"); exit(1);
+    }
+}
+
+// --------------- Conversion Functions ---------------
+
+void voltage_conversion(void) {
+    static const unit_option unit_list[] = {
+        {"uV", 0.000001},
+        {"mV", 0.001},
+        {"V",  1.0},
+        {"kV", 1000.0},
+        {"MV", 1000000.0}
+    };
+    run_unit_converter("Voltage Conversion", unit_list,
+                       (int)(sizeof(unit_list) / sizeof(unit_list[0])));
+    conversion_menu();
+}
+
+void current_conversion(void) {
+    static const unit_option unit_list[] = {
+        {"nA", 0.000000001},
+        {"uA", 0.000001},
+        {"mA", 0.001},
+        {"A",  1.0}
+    };
+    run_unit_converter("Current Conversion", unit_list,
+                       (int)(sizeof(unit_list) / sizeof(unit_list[0])));
+    conversion_menu();
+}
+
+void resistance_conversion(void) {
+    static const unit_option unit_list[] = {
+        {"Ohm", 1.0},
+        {"kOhm", 1000.0},
+        {"MOhm", 1000000.0}
+    };
+    run_unit_converter("Resistance Conversion", unit_list,
+                       (int)(sizeof(unit_list) / sizeof(unit_list[0])));
+    conversion_menu();
+}
+
+void capacitance_conversion(void) {
+    static const unit_option unit_list[] = {
+        {"pF", 0.000000000001},
+        {"nF", 0.000000001},
+        {"uF", 0.000001},
+        {"mF", 0.001},
+        {"F",  1.0}
+    };
+    run_unit_converter("Capacitance Conversion", unit_list,
+                       (int)(sizeof(unit_list) / sizeof(unit_list[0])));
+    conversion_menu();
+}
+
+void inductance_conversion(void) {
+    static const unit_option unit_list[] = {
+        {"nH", 0.000000001},
+        {"uH", 0.000001},
+        {"mH", 0.001},
+        {"H",  1.0}
+    };
+    run_unit_converter("Inductance Conversion", unit_list,
+                       (int)(sizeof(unit_list) / sizeof(unit_list[0])));
+    conversion_menu();
+}
+
+void frequency_conversion(void) {
+    static const unit_option unit_list[] = {
+        {"Hz",  1.0},
+        {"kHz", 1000.0},
+        {"MHz", 1000000.0},
+        {"GHz", 1000000000.0}
+    };
+    run_unit_converter("Frequency Conversion", unit_list,
+                       (int)(sizeof(unit_list) / sizeof(unit_list[0])));
+    conversion_menu();
+}
+
+void power_conversion(void) {
+    static const unit_option unit_list[] = {
+        {"mW", 0.001},
+        {"W",  1.0},
+        {"kW", 1000.0},
+        {"MW", 1000000.0}
+    };
+    run_unit_converter("Power Conversion", unit_list,
+                       (int)(sizeof(unit_list) / sizeof(unit_list[0])));
+    conversion_menu();
 }

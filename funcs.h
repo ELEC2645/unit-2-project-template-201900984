@@ -27,4 +27,16 @@ void top_menu(void);
 void print_top_menu(void);
 void select_top_menu_item(int input);
 
+void conversion_menu(void);
+void print_conversion_menu(void);
+void select_conversion_item(int input);
+
+void voltage_conversion(void);
+void current_conversion(void);
+void resistance_conversion(void);
+void capacitance_conversion(void);
+void inductance_conversion(void);
+void frequency_conversion(void);
+void power_conversion(void);
+
 #endif
