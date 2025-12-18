@@ -1,20 +1,28 @@
 #include "funcs.h"
 
-/* current value shown in menu and updated after each operation */
+/* ============================================================================
+ * SECTION 1: GLOBAL STATE & SHARED DATA
+ * ============================================================================ */
+
+/* Current value shown in menu and updated after each operation */
 static double Ans = 0.0;
 
-/* Flush leftover input */
+/* ============================================================================
+ * SECTION 2: UTILITY FUNCTIONS
+ * ============================================================================ */
+
+/* Clear the Ans value to zero */
+void clear_ans(void) {
+    Ans = 0.0;
+}
+
+/* Flush leftover input (currently unused) */
 static void flush_input_buffer(void) {
     int ch;
     while ((ch = getchar()) != '\n' && ch != EOF) {}
 }
 
-void calculator_menu(void) {
-    print_calculator_menu();
-    int input = get_user_input(12);
-    select_calculator_item(input);
-}
-
+/* Get validated integer input from user within range [1, max_option] */
 int get_user_input(int max_option) {
     char buffer[64];
     char *endptr;
@@ -34,72 +42,26 @@ int get_user_input(int max_option) {
     }
 }
 
+/* Get validated double number from user, supports 'pi' and 'e' constants */
+double get_number(char *prompt) {
+    char buffer[64], *endptr;
+    double b;
 
-/* int get_user_input(void) {
-    int input;
-    printf("\nSelect item: ");
-    scanf("%d", &input);  // assume valid input for this activity
-    return input;
-} */ 
-
-
-void print_calculator_menu(void) {
-    display_current();
-    printf("\n----------- Calculator -----------\n");
-    printf("|\t1. Addition\t\t|\n");
-    printf("|\t2. Subtraction\t\t|\n");
-    printf("|\t3. Multiplication\t|\n");
-    printf("|\t4. Division\t\t|\n");
-    printf("|\t5. Nth Root\t\t|\n");
-    printf("|\t6. Power\t\t|\n");
-    printf("|\t7. Logarithm\t\t|\n");
-    printf("|\t8. Sin\t\t\t|\n");
-    printf("|\t9. Cos\t\t\t|\n");
-    printf("|\t10. Tan\t\t\t|\n");
-    printf("|\t11. Clear Ans\t\t|\n");
-    printf("|\t12. Go Back\t\t|\n");
-    printf("---------------------------------\n");
-}
-
-void select_calculator_item(int input) {
-    switch (input) {
-        case 1: menu_item_1(); break;
-        case 2: menu_item_2(); break;
-        case 3: menu_item_3(); break;
-        case 4: menu_item_4(); break;
-        case 5: menu_item_5(); break;
-        case 6: menu_item_6(); break;
-        case 7: menu_item_7(); break;
-        case 8: menu_item_8(); break;
-        case 9: menu_item_9(); break;
-        case 10: menu_item_10(); break;
-        case 11: Ans = 0.0; printf("\nAns cleared.\n"); calculator_menu(); break;
-        case 12: top_menu(); break;
-        default: printf("Invalid selection. Exiting...\n"); exit(1);
+    while (1) {
+        printf("%s", prompt);
+        if (fgets(buffer, sizeof buffer, stdin)) {
+            buffer[strcspn(buffer, "\n")] = '\0';
+            b = strtod(buffer, &endptr);
+            if (endptr != buffer && *endptr == '\0') return b;
+            // Check for constants (case-insensitive)
+            if (strcasecmp(buffer, "pi") == 0) return M_PI;
+            if (strcasecmp(buffer, "e") == 0) return M_E;
+        }
+        printf("Invalid input. Try again.\n");
     }
 }
 
-/* void go_back_to_main(void) {
-    /* char input;
-    // this do loop ensures user inputs 'b' or 'B' to go back
-    // if user inputs other characters, it keeps prompting
-    do {
-        printf("\nEnter 'b' or 'B' to go back to main menu: ");
-        scanf(" %c", &input);
-        flush_input_buffer(); //mannuelly remove \n 
-    } while (input != 'b' && input != 'B'); 
-    main_menu();
-} */
-
-// --------------- Menu Item Functions ---------------
-
-/*void get_two_numbers(double *a, double *b) {
-    printf("Enter first number: ");
-    scanf("%lf", a);
-
-    printf("Enter second number: ");
-    scanf("%lf", b);
-} */
+/* Get two numbers from user (legacy function, not currently used) */
 void get_two_numbers(double *a, double *b) {
     char buffer[64], *endptr;
 
@@ -124,28 +86,16 @@ void get_two_numbers(double *a, double *b) {
     }
 }
 
-double get_number(char *prompt) {
-    char buffer[64], *endptr;
-    double b;
-
-    while (1) {
-        printf("%s", prompt);
-        if (fgets(buffer, sizeof buffer, stdin)) {
-            buffer[strcspn(buffer, "\n")] = '\0';
-            b = strtod(buffer, &endptr);
-            if (endptr != buffer && *endptr == '\0') return b;
-            // Check for constants (case-insensitive)
-            if (strcasecmp(buffer, "pi") == 0) return M_PI;
-            if (strcasecmp(buffer, "e") == 0) return M_E;
-        }
-        printf("Invalid input. Try again.\n");
-    }
-}
-
+/* Display current Ans value */
 void display_current(void) {
     printf("\nAns: %.15g\n", Ans);
 }
 
+/* ============================================================================
+ * SECTION 5: CALCULATOR OPERATIONS
+ * ============================================================================ */
+
+/* Addition operation */
 void menu_item_1(void) {
     printf("\n>> Menu 1: Addition\n");
     display_current();
@@ -155,7 +105,7 @@ void menu_item_1(void) {
     calculator_menu();
 }
 
-
+/* Subtraction operation */
 void menu_item_2(void) {
     printf("\n>> Menu 2: Subtraction\n");
     display_current();
@@ -165,7 +115,7 @@ void menu_item_2(void) {
     calculator_menu();
 }
 
-
+/* Multiplication operation */
 void menu_item_3(void) {
     printf("\n>> Menu 3: Multiplication\n");
     display_current();
@@ -175,7 +125,7 @@ void menu_item_3(void) {
     calculator_menu();
 }
 
-
+/* Division operation */
 void menu_item_4(void) {
     printf("\n>> Menu 4: Division\n");
     display_current();
@@ -191,6 +141,7 @@ void menu_item_4(void) {
     calculator_menu();
 }
 
+/* Nth root operation */
 void menu_item_5(void) {
     printf("\n>> Menu 5: Nth Root\n");
     display_current();
@@ -208,6 +159,7 @@ void menu_item_5(void) {
     calculator_menu();
 }
 
+/* Power operation */
 void menu_item_6(void) {
     printf("\n>> Menu 6: Power\n");
     display_current();
@@ -219,6 +171,7 @@ void menu_item_6(void) {
     calculator_menu();
 }
 
+/* Logarithm operation */
 void menu_item_7(void) {
     printf("\n>> Menu 7: Logarithm\n");
     display_current();
@@ -234,6 +187,7 @@ void menu_item_7(void) {
     calculator_menu();
 }
 
+/* Sine operation (degree mode) */
 void menu_item_8(void) {
     printf("\n>> Menu 8: Sin\n");
     display_current();
@@ -245,6 +199,7 @@ void menu_item_8(void) {
     calculator_menu();
 }
 
+/* Cosine operation (degree mode) */
 void menu_item_9(void) {
     printf("\n>> Menu 9: Cos\n");
     display_current();
@@ -256,6 +211,7 @@ void menu_item_9(void) {
     calculator_menu();
 }
 
+/* Tangent operation (degree mode) */
 void menu_item_10(void) {
     printf("\n>> Menu 10: Tan\n");
     display_current();
@@ -267,115 +223,52 @@ void menu_item_10(void) {
     calculator_menu();
 }
 
-void top_menu(void) {
-    print_top_menu();
-    int input = get_user_input(3);
-    select_top_menu_item(input);
-}
+/* ============================================================================
+ * SECTION 6: UNIT CONVERSION SYSTEM
+ * ============================================================================ */
 
-void print_top_menu(void) {
-    display_current();
-    printf("\n----------- Top menu -----------\n");
-    printf("|\t1. Calculator\t\t|\n");
-    printf("|\t2. Conversion\t\t|\n");
-    printf("|\t3. Exit\t\t\t|\n");
-    printf("--------------------------------\n");
-}
-
-void select_top_menu_item(int input) {
-    switch (input) {
-        case 1: calculator_menu(); break;
-        case 2: conversion_menu(); break;
-        case 3: printf("Exiting program...\n"); exit(0);
-        default: printf("Invalid selection.\n"); break;
-    }
-}
-
-// --------------- Conversion Menu ---------------
-
+/* Unit conversion data structure */
 typedef struct {
     const char *unit_print_name;   /* e.g. "mV" */
     double factor_to_base;         /* multiply by this to convert to base unit */
 } unit_option;
 
+/* Generic unit converter engine - handles all conversion types */
 static void run_unit_converter(const char *title,
                                const unit_option *unit_list,
                                int unit_count)
 {
-    while (1) {
-        printf("\n%s\n", title);
-        display_current();
-
-        printf("\nFrom:\n");
-        for (int i = 0; i < unit_count; i++) {
-            printf("%d. %s\n", i + 1, unit_list[i].unit_print_name);
-        }
-        printf("%d. Go Back\n", unit_count + 1);
-
-        int from = get_user_input(unit_count + 1);
-        if (from == unit_count + 1) return;
-
-        printf("\nTo:\n");
-        for (int i = 0; i < unit_count; i++) {
-            printf("%d. %s\n", i + 1, unit_list[i].unit_print_name);
-        }
-        printf("%d. Go Back\n", unit_count + 1);
-
-        int to = get_user_input(unit_count + 1);
-        if (to == unit_count + 1) return;
-
-        double value = get_number("Enter value: ");
-
-        /* Convert: value -> base -> target */
-        double base_value = value * unit_list[from - 1].factor_to_base;
-        double result = base_value / unit_list[to - 1].factor_to_base;
-
-        printf("\n%.15g %s = %.15g %s\n",
-               value, unit_list[from - 1].unit_print_name,
-               result, unit_list[to - 1].unit_print_name);
-        
-        Ans = result;  /* Update Ans with conversion result */
-    }
-}
-
-void conversion_menu(void) {
-    print_conversion_menu();
-    int input = get_user_input(9);
-    select_conversion_item(input);
-}
-
-void print_conversion_menu(void) {
+    printf("\n%s\n", title);
     display_current();
-    printf("\n----------- Conversion -----------\n");
-    printf("|\t1. Voltage\t\t|\n");
-    printf("|\t2. Current\t\t|\n");
-    printf("|\t3. Resistance\t\t|\n");
-    printf("|\t4. Capacitance\t\t|\n");
-    printf("|\t5. Inductance\t\t|\n");
-    printf("|\t6. Frequency\t\t|\n");
-    printf("|\t7. Power\t\t|\n");
-    printf("|\t8. Clear Ans\t\t|\n");
-    printf("|\t9. Go Back\t\t|\n");
-    printf("---------------------------------\n");
-}
 
-void select_conversion_item(int input) {
-    switch (input) {
-        case 1: voltage_conversion(); break;
-        case 2: current_conversion(); break;
-        case 3: resistance_conversion(); break;
-        case 4: capacitance_conversion(); break;
-        case 5: inductance_conversion(); break;
-        case 6: frequency_conversion(); break;
-        case 7: power_conversion(); break;
-        case 8: Ans = 0.0; printf("\nAns cleared.\n"); conversion_menu(); break;
-        case 9: top_menu(); break;
-        default: printf("Invalid selection. Exiting...\n"); exit(1);
+    printf("\nFrom:\n");
+    for (int i = 0; i < unit_count; i++) {
+        printf("%d. %s\n", i + 1, unit_list[i].unit_print_name);
     }
+
+    int from = get_user_input(unit_count);
+
+    printf("\nTo:\n");
+    for (int i = 0; i < unit_count; i++) {
+        printf("%d. %s\n", i + 1, unit_list[i].unit_print_name);
+    }
+
+    int to = get_user_input(unit_count);
+
+    double value = get_number("Enter value: ");
+
+    /* Convert: value -> base -> target */
+    double base_value = value * unit_list[from - 1].factor_to_base;
+    double result = base_value / unit_list[to - 1].factor_to_base;
+
+    printf("\n%.15g %s = %.15g %s\n",
+           value, unit_list[from - 1].unit_print_name,
+           result, unit_list[to - 1].unit_print_name);
+    
+    Ans = result;  /* Update Ans with conversion result */
 }
 
-// --------------- Conversion Functions ---------------
-
+/* Voltage conversion: microvolts to megavolts */
 void voltage_conversion(void) {
     static const unit_option unit_list[] = {
         {"uV", 0.000001},
@@ -389,6 +282,7 @@ void voltage_conversion(void) {
     conversion_menu();
 }
 
+/* Current conversion: nanoamperes to amperes */
 void current_conversion(void) {
     static const unit_option unit_list[] = {
         {"nA", 0.000000001},
@@ -401,6 +295,7 @@ void current_conversion(void) {
     conversion_menu();
 }
 
+/* Resistance conversion: ohms to megaohms */
 void resistance_conversion(void) {
     static const unit_option unit_list[] = {
         {"Ohm", 1.0},
@@ -412,6 +307,7 @@ void resistance_conversion(void) {
     conversion_menu();
 }
 
+/* Capacitance conversion: picofarads to farads */
 void capacitance_conversion(void) {
     static const unit_option unit_list[] = {
         {"pF", 0.000000000001},
@@ -425,6 +321,7 @@ void capacitance_conversion(void) {
     conversion_menu();
 }
 
+/* Inductance conversion: nanohenries to henries */
 void inductance_conversion(void) {
     static const unit_option unit_list[] = {
         {"nH", 0.000000001},
@@ -437,6 +334,7 @@ void inductance_conversion(void) {
     conversion_menu();
 }
 
+/* Frequency conversion: hertz to gigahertz */
 void frequency_conversion(void) {
     static const unit_option unit_list[] = {
         {"Hz",  1.0},
@@ -449,6 +347,7 @@ void frequency_conversion(void) {
     conversion_menu();
 }
 
+/* Power conversion: milliwatts to megawatts */
 void power_conversion(void) {
     static const unit_option unit_list[] = {
         {"mW", 0.001},
