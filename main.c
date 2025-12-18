@@ -2,7 +2,7 @@
 
 int main(void) {
     
-	main_menu();
+	top_menu();
 
 	return 0;
 }
