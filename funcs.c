@@ -66,14 +66,14 @@ void select_menu_item(int input) {
 }
 
 void go_back_to_main(void) {
-    char input;
+    /* char input;
     // this do loop ensures user inputs 'b' or 'B' to go back
     // if user inputs other characters, it keeps prompting
     do {
         printf("\nEnter 'b' or 'B' to go back to main menu: ");
         scanf(" %c", &input);
         flush_input_buffer(); //mannuelly remove \n 
-    } while (input != 'b' && input != 'B');
+    } while (input != 'b' && input != 'B'); */
     main_menu();
 }
 
@@ -115,7 +115,7 @@ void menu_item_1(void) {
     double a, b;
     get_two_numbers(&a, &b);
     printf("Result: %.15g + %.15g = %.15g\n", a, b, a + b);
-    go_back_to_main();
+    main_menu();
 }
 
 
@@ -124,7 +124,7 @@ void menu_item_2(void) {
     double a, b;
     get_two_numbers(&a, &b);
     printf("Result: %.15g - %.15g = %.15g\n", a, b, a - b);
-    go_back_to_main();
+    main_menu();
 }
 
 
@@ -133,7 +133,7 @@ void menu_item_3(void) {
     double a, b;
     get_two_numbers(&a, &b);
     printf("Result: %.15g * %.15g = %.15g\n", a, b, a * b);
-    go_back_to_main();
+    main_menu();
 }
 
 
@@ -147,5 +147,5 @@ void menu_item_4(void) {
     printf("Result: %.15g / %.15g = %.15g\n", a, b, a / b);
 }
 
-    go_back_to_main();
+    main_menu();
 }
