@@ -11,23 +11,23 @@ void flush_input_buffer(void) {
 
 void main_menu(void) {
     print_main_menu();
-    int input = get_user_input();
+    int input = get_user_input(5);
     select_menu_item(input);
 }
 
-int get_user_input(void) {
+int get_user_input(int max_option) {
     char buffer[64];
     char *endptr;
     long val;
 
     while (1) {
-        printf("\nSelect item (1–5): ");
+        printf("\nSelect item: ");
         if (!fgets(buffer, sizeof(buffer), stdin)) continue;
 
         buffer[strcspn(buffer, "\n")] = '\0';      // Remove newline
         val = strtol(buffer, &endptr, 10);         // Convert to long
 
-        if (*endptr == '\0' && val >= 1 && val <= 5)
+        if (*endptr == '\0' && val >= 1 && val <= max_option)
             return (int)val;
 
         printf("Invalid input. \n");
@@ -50,7 +50,7 @@ void print_main_menu(void) {
     printf("|\t2. Subtraction\t|\n");
     printf("|\t3. Multiplication |\n");
     printf("|\t4. Division \t\t|\n");
-    printf("|\t5. Exit\t\t\t|\n");
+    printf("|\t5. Go Back\t|\n");
     printf("---------------------------------\n");
 }
 
@@ -60,7 +60,7 @@ void select_menu_item(int input) {
         case 2: menu_item_2(); break;
         case 3: menu_item_3(); break;
         case 4: menu_item_4(); break;
-        case 5: printf("Exiting program...\n"); exit(0);
+        case 5: top_menu();
         default: printf("Invalid selection. Exiting...\n"); exit(1);
     }
 }
@@ -151,4 +151,27 @@ void menu_item_4(void) {
 }
     current = a / b;
     main_menu();
+}
+
+void top_menu(void) {
+    print_top_menu();
+    int input = get_user_input(3);
+    select_top_menu_item(input);
+}
+
+void print_top_menu(void) {
+    printf("\n----------- Top menu -----------\n");
+    printf("|\t1. Calculator\t|\n");
+    printf("|\t2. Conversion\t|\n");
+    printf("|\t3. Exit\t\t|\n");
+    printf("--------------------------------\n");
+}
+
+void select_top_menu_item(int input) {
+    switch (input) {
+        case 1: main_menu(); break;
+        case 2: printf("Conversion\n"); break;
+        case 3: printf("Exiting program...\n"); exit(0);
+        default: printf("Invalid selection.\n"); break;
+    }
 }
