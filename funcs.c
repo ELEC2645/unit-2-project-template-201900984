@@ -110,46 +110,63 @@ void get_two_numbers(double *a, double *b) {
     }
 }
 
+double get_second_number(char *prompt) {
+    char buffer[64], *endptr;
+    double b;
+
+    while (1) {
+        printf("%s", prompt);
+        if (fgets(buffer, sizeof buffer, stdin)) {
+            buffer[strcspn(buffer, "\n")] = '\0';
+            b = strtod(buffer, &endptr);
+            if (endptr != buffer && *endptr == '\0') return b;
+        }
+        printf("Invalid input. Try again.\n");
+    }
+}
+
 void menu_item_1(void) {
     printf("\n>> Menu 1: Addition\n");
-    double a, b;
-    get_two_numbers(&a, &b);
-    printf("Result: %.15g + %.15g = %.15g\n", a, b, a + b);
-    current = a + b;
+    printf("Current: %.15g\n", current);
+    double b = get_second_number("Enter number to add: ");
+    printf("Result: %.15g + %.15g = %.15g\n", current, b, current + b);
+    current += b;
     calculator_menu();
 }
 
 
 void menu_item_2(void) {
     printf("\n>> Menu 2: Subtraction\n");
-    double a, b;
-    get_two_numbers(&a, &b);
-    printf("Result: %.15g - %.15g = %.15g\n", a, b, a - b);
-    current = a - b;
+    printf("Current: %.15g\n", current);
+    double b = get_second_number("Enter number to subtract: ");
+    printf("Result: %.15g - %.15g = %.15g\n", current, b, current - b);
+    current -= b;
     calculator_menu();
 }
 
 
 void menu_item_3(void) {
     printf("\n>> Menu 3: Multiplication\n");
-    double a, b;
-    get_two_numbers(&a, &b);
-    printf("Result: %.15g * %.15g = %.15g\n", a, b, a * b);
-    current = a * b;
+    printf("Current: %.15g\n", current);
+    double b = get_second_number("Enter number to multiply: ");
+    printf("Result: %.15g * %.15g = %.15g\n", current, b, current * b);
+    current *= b;
     calculator_menu();
 }
 
 
 void menu_item_4(void) {
     printf("\n>> Menu 4: Division\n");
-    double a, b;
-    get_two_numbers(&a, &b);
-    if (b == 0.0) {
-    printf("Error: division by zero\n");
-    } else {
-    printf("Result: %.15g / %.15g = %.15g\n", a, b, a / b);
-}
-    current = a / b;
+    printf("Current: %.15g\n", current);
+    double b;
+    do {
+        b = get_second_number("Enter number to divide by: ");
+        if (b == 0.0) {
+            printf("Invalid input. Try again.\n");
+        }
+    } while (b == 0.0);
+    printf("Result: %.15g / %.15g = %.15g\n", current, b, current / b);
+    current /= b;
     calculator_menu();
 }
 
@@ -160,6 +177,7 @@ void top_menu(void) {
 }
 
 void print_top_menu(void) {
+    printf("\nCurrent: %.15g\n", current);
     printf("\n----------- Top menu -----------\n");
     printf("|\t1. Calculator\t\t|\n");
     printf("|\t2. Conversion\t\t|\n");
