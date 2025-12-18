@@ -66,7 +66,7 @@ void select_calculator_item(int input) {
         case 5: menu_item_5(); break;
         case 6: menu_item_6(); break;
         case 7: menu_item_7(); break;
-        case 8: top_menu();
+        case 8: top_menu(); break;
         default: printf("Invalid selection. Exiting...\n"); exit(1);
     }
 }
@@ -292,6 +292,8 @@ static void run_unit_converter(const char *title,
         printf("\n%.15g %s = %.15g %s\n",
                value, unit_list[from - 1].unit_print_name,
                result, unit_list[to - 1].unit_print_name);
+        
+        current = result;  /* Update current with conversion result */
     }
 }
 
@@ -324,7 +326,7 @@ void select_conversion_item(int input) {
         case 5: inductance_conversion(); break;
         case 6: frequency_conversion(); break;
         case 7: power_conversion(); break;
-        case 8: top_menu();
+        case 8: top_menu(); break;
         default: printf("Invalid selection. Exiting...\n"); exit(1);
     }
 }
