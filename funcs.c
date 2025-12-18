@@ -115,6 +115,7 @@ void menu_item_1(void) {
     double a, b;
     get_two_numbers(&a, &b);
     printf("Result: %.15g + %.15g = %.15g\n", a, b, a + b);
+    current = a + b;
     main_menu();
 }
 
@@ -124,6 +125,7 @@ void menu_item_2(void) {
     double a, b;
     get_two_numbers(&a, &b);
     printf("Result: %.15g - %.15g = %.15g\n", a, b, a - b);
+    current = a - b;
     main_menu();
 }
 
@@ -133,6 +135,7 @@ void menu_item_3(void) {
     double a, b;
     get_two_numbers(&a, &b);
     printf("Result: %.15g * %.15g = %.15g\n", a, b, a * b);
+    current = a * b;
     main_menu();
 }
 
@@ -146,6 +149,6 @@ void menu_item_4(void) {
     } else {
     printf("Result: %.15g / %.15g = %.15g\n", a, b, a / b);
 }
-
+    current = a / b;
     main_menu();
 }
