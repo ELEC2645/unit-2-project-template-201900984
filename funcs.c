@@ -1,7 +1,7 @@
 #include "funcs.h"
 
 /* current value shown in menu and updated after each operation */
-static double current = 0.0;
+static double Ans = 0.0;
 
 /* Flush leftover input */
 static void flush_input_buffer(void) {
@@ -11,7 +11,7 @@ static void flush_input_buffer(void) {
 
 void calculator_menu(void) {
     print_calculator_menu();
-    int input = get_user_input(8);
+    int input = get_user_input(9);
     select_calculator_item(input);
 }
 
@@ -53,7 +53,8 @@ void print_calculator_menu(void) {
     printf("|\t5. Nth Root\t\t|\n");
     printf("|\t6. Power\t\t|\n");
     printf("|\t7. Logarithm\t\t|\n");
-    printf("|\t8. Go Back\t\t|\n");
+    printf("|\t8. Clear Ans\t\t|\n");
+    printf("|\t9. Go Back\t\t|\n");
     printf("---------------------------------\n");
 }
 
@@ -66,7 +67,8 @@ void select_calculator_item(int input) {
         case 5: menu_item_5(); break;
         case 6: menu_item_6(); break;
         case 7: menu_item_7(); break;
-        case 8: top_menu(); break;
+        case 8: Ans = 0.0; printf("\nAns cleared.\n"); calculator_menu(); break;
+        case 9: top_menu(); break;
         default: printf("Invalid selection. Exiting...\n"); exit(1);
     }
 }
@@ -135,15 +137,15 @@ double get_number(char *prompt) {
 }
 
 void display_current(void) {
-    printf("\nCurrent: %.15g\n", current);
+    printf("\nAns: %.15g\n", Ans);
 }
 
 void menu_item_1(void) {
     printf("\n>> Menu 1: Addition\n");
     display_current();
     double b = get_number("Enter number to add: ");
-    printf("Result: %.15g + %.15g = %.15g\n", current, b, current + b);
-    current += b;
+    printf("Result: %.15g + %.15g = %.15g\n", Ans, b, Ans + b);
+    Ans += b;
     calculator_menu();
 }
 
@@ -152,8 +154,8 @@ void menu_item_2(void) {
     printf("\n>> Menu 2: Subtraction\n");
     display_current();
     double b = get_number("Enter number to subtract: ");
-    printf("Result: %.15g - %.15g = %.15g\n", current, b, current - b);
-    current -= b;
+    printf("Result: %.15g - %.15g = %.15g\n", Ans, b, Ans - b);
+    Ans -= b;
     calculator_menu();
 }
 
@@ -162,8 +164,8 @@ void menu_item_3(void) {
     printf("\n>> Menu 3: Multiplication\n");
     display_current();
     double b = get_number("Enter number to multiply: ");
-    printf("Result: %.15g * %.15g = %.15g\n", current, b, current * b);
-    current *= b;
+    printf("Result: %.15g * %.15g = %.15g\n", Ans, b, Ans * b);
+    Ans *= b;
     calculator_menu();
 }
 
@@ -178,8 +180,8 @@ void menu_item_4(void) {
             printf("Invalid input. Try again.\n");
         }
     } while (b == 0.0);
-    printf("Result: %.15g / %.15g = %.15g\n", current, b, current / b);
-    current /= b;
+    printf("Result: %.15g / %.15g = %.15g\n", Ans, b, Ans / b);
+    Ans /= b;
     calculator_menu();
 }
 
@@ -195,7 +197,7 @@ void menu_item_5(void) {
     } else {
         double result = pow(base, 1.0 / n);
         printf("Result: %.15g^(1/%.15g) = %.15g\n", base, n, result);
-        current = result;
+        Ans = result;
     }
     calculator_menu();
 }
@@ -207,7 +209,7 @@ void menu_item_6(void) {
     double exp = get_number("Enter exponent: ");
     double result = pow(base, exp);
     printf("Result: %.15g ^ %.15g = %.15g\n", base, exp, result);
-    current = result;
+    Ans = result;
     calculator_menu();
 }
 
@@ -221,7 +223,7 @@ void menu_item_7(void) {
     } else {
         double result = log(value) / log(base);
         printf("Result: log_%.15g(%.15g) = %.15g\n", base, value, result);
-        current = result;
+        Ans = result;
     }
     calculator_menu();
 }
@@ -293,13 +295,13 @@ static void run_unit_converter(const char *title,
                value, unit_list[from - 1].unit_print_name,
                result, unit_list[to - 1].unit_print_name);
         
-        current = result;  /* Update current with conversion result */
+        Ans = result;  /* Update Ans with conversion result */
     }
 }
 
 void conversion_menu(void) {
     print_conversion_menu();
-    int input = get_user_input(8);
+    int input = get_user_input(9);
     select_conversion_item(input);
 }
 
@@ -313,7 +315,8 @@ void print_conversion_menu(void) {
     printf("|\t5. Inductance\t\t|\n");
     printf("|\t6. Frequency\t\t|\n");
     printf("|\t7. Power\t\t|\n");
-    printf("|\t8. Go Back\t\t|\n");
+    printf("|\t8. Clear Ans\t\t|\n");
+    printf("|\t9. Go Back\t\t|\n");
     printf("---------------------------------\n");
 }
 
@@ -326,7 +329,8 @@ void select_conversion_item(int input) {
         case 5: inductance_conversion(); break;
         case 6: frequency_conversion(); break;
         case 7: power_conversion(); break;
-        case 8: top_menu(); break;
+        case 8: Ans = 0.0; printf("\nAns cleared.\n"); conversion_menu(); break;
+        case 9: top_menu(); break;
         default: printf("Invalid selection. Exiting...\n"); exit(1);
     }
 }
