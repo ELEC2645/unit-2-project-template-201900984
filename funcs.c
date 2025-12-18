@@ -126,6 +126,9 @@ double get_number(char *prompt) {
             buffer[strcspn(buffer, "\n")] = '\0';
             b = strtod(buffer, &endptr);
             if (endptr != buffer && *endptr == '\0') return b;
+            // Check for constants (case-insensitive)
+            if (strcasecmp(buffer, "pi") == 0) return M_PI;
+            if (strcasecmp(buffer, "e") == 0) return M_E;
         }
         printf("Invalid input. Try again.\n");
     }

@@ -1,8 +1,6 @@
 #ifndef FUNCS_H
 #define FUNCS_H
 
-#define PI 3.14159f
-
 #include <stdio.h> // for printf(), scanf()
 #include <stdlib.h> // for exit()
 #include <string.h> 
