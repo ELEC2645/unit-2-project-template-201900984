@@ -1,5 +1,8 @@
 #include "funcs.h"
 
+/* current value shown in menu and updated after each operation */
+static double current = 0.0;
+
 /* Flush leftover input */
 void flush_input_buffer(void) {
     int ch;
@@ -41,6 +44,7 @@ int get_user_input(void) {
 
 
 void print_main_menu(void) {
+    printf("\nCurrent: %.15g\n", current);
     printf("\n----------- Main menu -----------\n");
     printf("|\t1. Addition\t|\n");
     printf("|\t2. Subtraction\t|\n");
