@@ -8,11 +8,11 @@
 #include <string.h> 
 
 int get_user_input(int max_option);
-void select_menu_item(int input);
-void print_main_menu(void);
+void select_calculator_item(int input);
+void print_calculator_menu(void);
 void get_two_numbers(double *a, double *b);
 /* void go_back_to_main(void);  */
-void main_menu(void);
+void calculator_menu(void);
 
 void menu_item_1(void);
 void menu_item_2(void);

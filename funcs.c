@@ -9,10 +9,10 @@ void flush_input_buffer(void) {
     while ((ch = getchar()) != '\n' && ch != EOF) {}
 }
 
-void main_menu(void) {
-    print_main_menu();
+void calculator_menu(void) {
+    print_calculator_menu();
     int input = get_user_input(5);
-    select_menu_item(input);
+    select_calculator_item(input);
 }
 
 int get_user_input(int max_option) {
@@ -43,18 +43,18 @@ int get_user_input(int max_option) {
 } */ 
 
 
-void print_main_menu(void) {
+void print_calculator_menu(void) {
     printf("\nCurrent: %.15g\n", current);
-    printf("\n----------- Main menu -----------\n");
-    printf("|\t1. Addition\t|\n");
-    printf("|\t2. Subtraction\t|\n");
-    printf("|\t3. Multiplication |\n");
-    printf("|\t4. Division \t\t|\n");
-    printf("|\t5. Go Back\t|\n");
+    printf("\n----------- Calculator -----------\n");
+    printf("|\t1. Addition\t\t|\n");
+    printf("|\t2. Subtraction\t\t|\n");
+    printf("|\t3. Multiplication\t|\n");
+    printf("|\t4. Division\t\t|\n");
+    printf("|\t5. Go Back\t\t|\n");
     printf("---------------------------------\n");
 }
 
-void select_menu_item(int input) {
+void select_calculator_item(int input) {
     switch (input) {
         case 1: menu_item_1(); break;
         case 2: menu_item_2(); break;
@@ -116,7 +116,7 @@ void menu_item_1(void) {
     get_two_numbers(&a, &b);
     printf("Result: %.15g + %.15g = %.15g\n", a, b, a + b);
     current = a + b;
-    main_menu();
+    calculator_menu();
 }
 
 
@@ -126,7 +126,7 @@ void menu_item_2(void) {
     get_two_numbers(&a, &b);
     printf("Result: %.15g - %.15g = %.15g\n", a, b, a - b);
     current = a - b;
-    main_menu();
+    calculator_menu();
 }
 
 
@@ -136,7 +136,7 @@ void menu_item_3(void) {
     get_two_numbers(&a, &b);
     printf("Result: %.15g * %.15g = %.15g\n", a, b, a * b);
     current = a * b;
-    main_menu();
+    calculator_menu();
 }
 
 
@@ -150,7 +150,7 @@ void menu_item_4(void) {
     printf("Result: %.15g / %.15g = %.15g\n", a, b, a / b);
 }
     current = a / b;
-    main_menu();
+    calculator_menu();
 }
 
 void top_menu(void) {
@@ -161,15 +161,15 @@ void top_menu(void) {
 
 void print_top_menu(void) {
     printf("\n----------- Top menu -----------\n");
-    printf("|\t1. Calculator\t|\n");
-    printf("|\t2. Conversion\t|\n");
-    printf("|\t3. Exit\t\t|\n");
+    printf("|\t1. Calculator\t\t|\n");
+    printf("|\t2. Conversion\t\t|\n");
+    printf("|\t3. Exit\t\t\t|\n");
     printf("--------------------------------\n");
 }
 
 void select_top_menu_item(int input) {
     switch (input) {
-        case 1: main_menu(); break;
+        case 1: calculator_menu(); break;
         case 2: printf("Conversion\n"); break;
         case 3: printf("Exiting program...\n"); exit(0);
         default: printf("Invalid selection.\n"); break;
