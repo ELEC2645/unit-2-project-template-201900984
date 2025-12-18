@@ -11,7 +11,7 @@ static void flush_input_buffer(void) {
 
 void calculator_menu(void) {
     print_calculator_menu();
-    int input = get_user_input(9);
+    int input = get_user_input(12);
     select_calculator_item(input);
 }
 
@@ -53,8 +53,11 @@ void print_calculator_menu(void) {
     printf("|\t5. Nth Root\t\t|\n");
     printf("|\t6. Power\t\t|\n");
     printf("|\t7. Logarithm\t\t|\n");
-    printf("|\t8. Clear Ans\t\t|\n");
-    printf("|\t9. Go Back\t\t|\n");
+    printf("|\t8. Sin\t\t\t|\n");
+    printf("|\t9. Cos\t\t\t|\n");
+    printf("|\t10. Tan\t\t\t|\n");
+    printf("|\t11. Clear Ans\t\t|\n");
+    printf("|\t12. Go Back\t\t|\n");
     printf("---------------------------------\n");
 }
 
@@ -67,8 +70,11 @@ void select_calculator_item(int input) {
         case 5: menu_item_5(); break;
         case 6: menu_item_6(); break;
         case 7: menu_item_7(); break;
-        case 8: Ans = 0.0; printf("\nAns cleared.\n"); calculator_menu(); break;
-        case 9: top_menu(); break;
+        case 8: menu_item_8(); break;
+        case 9: menu_item_9(); break;
+        case 10: menu_item_10(); break;
+        case 11: Ans = 0.0; printf("\nAns cleared.\n"); calculator_menu(); break;
+        case 12: top_menu(); break;
         default: printf("Invalid selection. Exiting...\n"); exit(1);
     }
 }
@@ -225,6 +231,39 @@ void menu_item_7(void) {
         printf("Result: log_%.15g(%.15g) = %.15g\n", base, value, result);
         Ans = result;
     }
+    calculator_menu();
+}
+
+void menu_item_8(void) {
+    printf("\n>> Menu 8: Sin\n");
+    display_current();
+    double degree = get_number("Enter angle in degrees: ");
+    double radian = degree * M_PI / 180.0;
+    double result = sin(radian);
+    printf("Result: sin(%.15g°) = %.15g\n", degree, result);
+    Ans = result;
+    calculator_menu();
+}
+
+void menu_item_9(void) {
+    printf("\n>> Menu 9: Cos\n");
+    display_current();
+    double degree = get_number("Enter angle in degrees: ");
+    double radian = degree * M_PI / 180.0;
+    double result = cos(radian);
+    printf("Result: cos(%.15g°) = %.15g\n", degree, result);
+    Ans = result;
+    calculator_menu();
+}
+
+void menu_item_10(void) {
+    printf("\n>> Menu 10: Tan\n");
+    display_current();
+    double degree = get_number("Enter angle in degrees: ");
+    double radian = degree * M_PI / 180.0;
+    double result = tan(radian);
+    printf("Result: tan(%.15g°) = %.15g\n", degree, result);
+    Ans = result;
     calculator_menu();
 }
 
