@@ -11,7 +11,7 @@ void flush_input_buffer(void) {
 
 void calculator_menu(void) {
     print_calculator_menu();
-    int input = get_user_input(5);
+    int input = get_user_input(8);
     select_calculator_item(input);
 }
 
@@ -44,13 +44,16 @@ int get_user_input(int max_option) {
 
 
 void print_calculator_menu(void) {
-    printf("\nCurrent: %.15g\n", current);
+    display_current();
     printf("\n----------- Calculator -----------\n");
     printf("|\t1. Addition\t\t|\n");
     printf("|\t2. Subtraction\t\t|\n");
     printf("|\t3. Multiplication\t|\n");
     printf("|\t4. Division\t\t|\n");
-    printf("|\t5. Go Back\t\t|\n");
+    printf("|\t5. Nth Root\t\t|\n");
+    printf("|\t6. Power\t\t|\n");
+    printf("|\t7. Logarithm\t\t|\n");
+    printf("|\t8. Go Back\t\t|\n");
     printf("---------------------------------\n");
 }
 
@@ -60,7 +63,10 @@ void select_calculator_item(int input) {
         case 2: menu_item_2(); break;
         case 3: menu_item_3(); break;
         case 4: menu_item_4(); break;
-        case 5: top_menu();
+        case 5: menu_item_5(); break;
+        case 6: menu_item_6(); break;
+        case 7: menu_item_7(); break;
+        case 8: top_menu();
         default: printf("Invalid selection. Exiting...\n"); exit(1);
     }
 }
@@ -110,7 +116,7 @@ void get_two_numbers(double *a, double *b) {
     }
 }
 
-double get_second_number(char *prompt) {
+double get_number(char *prompt) {
     char buffer[64], *endptr;
     double b;
 
@@ -125,10 +131,14 @@ double get_second_number(char *prompt) {
     }
 }
 
+void display_current(void) {
+    printf("\nCurrent: %.15g\n", current);
+}
+
 void menu_item_1(void) {
     printf("\n>> Menu 1: Addition\n");
-    printf("Current: %.15g\n", current);
-    double b = get_second_number("Enter number to add: ");
+    display_current();
+    double b = get_number("Enter number to add: ");
     printf("Result: %.15g + %.15g = %.15g\n", current, b, current + b);
     current += b;
     calculator_menu();
@@ -137,8 +147,8 @@ void menu_item_1(void) {
 
 void menu_item_2(void) {
     printf("\n>> Menu 2: Subtraction\n");
-    printf("Current: %.15g\n", current);
-    double b = get_second_number("Enter number to subtract: ");
+    display_current();
+    double b = get_number("Enter number to subtract: ");
     printf("Result: %.15g - %.15g = %.15g\n", current, b, current - b);
     current -= b;
     calculator_menu();
@@ -147,8 +157,8 @@ void menu_item_2(void) {
 
 void menu_item_3(void) {
     printf("\n>> Menu 3: Multiplication\n");
-    printf("Current: %.15g\n", current);
-    double b = get_second_number("Enter number to multiply: ");
+    display_current();
+    double b = get_number("Enter number to multiply: ");
     printf("Result: %.15g * %.15g = %.15g\n", current, b, current * b);
     current *= b;
     calculator_menu();
@@ -157,16 +167,59 @@ void menu_item_3(void) {
 
 void menu_item_4(void) {
     printf("\n>> Menu 4: Division\n");
-    printf("Current: %.15g\n", current);
+    display_current();
     double b;
     do {
-        b = get_second_number("Enter number to divide by: ");
+        b = get_number("Enter number to divide by: ");
         if (b == 0.0) {
             printf("Invalid input. Try again.\n");
         }
     } while (b == 0.0);
     printf("Result: %.15g / %.15g = %.15g\n", current, b, current / b);
     current /= b;
+    calculator_menu();
+}
+
+void menu_item_5(void) {
+    printf("\n>> Menu 5: Nth Root\n");
+    display_current();
+    double base = get_number("Enter base: ");
+    double n = get_number("Enter root degree (n for nth root): ");
+    if (n == 0.0) {
+        printf("Invalid root degree: cannot be zero\n");
+    } else if (base < 0 && fmod(n, 2) != 1) {
+        printf("Invalid: negative base with even root degree\n");
+    } else {
+        double result = pow(base, 1.0 / n);
+        printf("Result: %.15g^(1/%.15g) = %.15g\n", base, n, result);
+        current = result;
+    }
+    calculator_menu();
+}
+
+void menu_item_6(void) {
+    printf("\n>> Menu 6: Power\n");
+    display_current();
+    double base = get_number("Enter base: ");
+    double exp = get_number("Enter exponent: ");
+    double result = pow(base, exp);
+    printf("Result: %.15g ^ %.15g = %.15g\n", base, exp, result);
+    current = result;
+    calculator_menu();
+}
+
+void menu_item_7(void) {
+    printf("\n>> Menu 7: Logarithm\n");
+    display_current();
+    double base = get_number("Enter base: ");
+    double value = get_number("Enter value: ");
+    if (base <= 0 || base == 1 || value <= 0) {
+        printf("Invalid base or value for logarithm\n");
+    } else {
+        double result = log(value) / log(base);
+        printf("Result: log_%.15g(%.15g) = %.15g\n", base, value, result);
+        current = result;
+    }
     calculator_menu();
 }
 
@@ -177,7 +230,7 @@ void top_menu(void) {
 }
 
 void print_top_menu(void) {
-    printf("\nCurrent: %.15g\n", current);
+    display_current();
     printf("\n----------- Top menu -----------\n");
     printf("|\t1. Calculator\t\t|\n");
     printf("|\t2. Conversion\t\t|\n");
