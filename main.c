@@ -47,9 +47,12 @@ void print_conversion_menu(void) {
     printf("|\t4. Capacitance\t\t|\n");
     printf("|\t5. Inductance\t\t|\n");
     printf("|\t6. Frequency\t\t|\n");
-    printf("|\t7. Power\t\t|\n");
-    printf("|\t8. Clear Ans\t\t|\n");
-    printf("|\t9. Go Back\t\t|\n");
+    printf("|\t7. Frequency (rad/s)\t|\n");
+    printf("|\t8. Power\t\t|\n");
+    printf("|\t9. Power (dBm)\t\t|\n");
+    printf("|\t10. Temperature\t\t|\n");
+    printf("|\t11. Clear Ans\t\t|\n");
+    printf("|\t12. Go Back\t\t|\n");
     printf("---------------------------------\n");
 }
 
@@ -103,7 +106,7 @@ void select_calculator_item(int input) {
 /* Conversion menu handler */
 void conversion_menu(void) {
     print_conversion_menu();
-    int input = get_user_input(9);
+    int input = get_user_input(12);
     select_conversion_item(input);
 }
 
@@ -116,9 +119,12 @@ void select_conversion_item(int input) {
         case 4: capacitance_conversion(); break;
         case 5: inductance_conversion(); break;
         case 6: frequency_conversion(); break;
-        case 7: power_conversion(); break;
-        case 8: clear_ans(); printf("\nAns cleared.\n"); conversion_menu(); break;
-        case 9: top_menu(); break;
+        case 7: frequency_rads_conversion(); break;
+        case 8: power_conversion(); break;
+        case 9: dbm_power_conversion(); break;
+        case 10: temperature_conversion(); break;
+        case 11: clear_ans(); printf("\nAns cleared.\n"); conversion_menu(); break;
+        case 12: top_menu(); break;
         default: printf("Invalid selection. Exiting...\n"); exit(1);
     }
 }

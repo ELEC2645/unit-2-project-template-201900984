@@ -40,6 +40,9 @@ void resistance_conversion(void);
 void capacitance_conversion(void);
 void inductance_conversion(void);
 void frequency_conversion(void);
+void frequency_rads_conversion(void);
 void power_conversion(void);
+void dbm_power_conversion(void);
+void temperature_conversion(void);
 
 #endif

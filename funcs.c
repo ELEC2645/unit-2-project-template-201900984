@@ -319,6 +319,48 @@ void frequency_conversion(void) {
     conversion_menu();
 }
 
+/* Frequency to rad/s conversion */
+void frequency_rads_conversion(void) {
+    printf("\nFrequency (Hz <-> rad/s)\n");
+    display_current();
+    printf("\nFrom:\n1. Hz\n2. rad/s\n");
+    int from = get_user_input(2);
+    printf("\nTo:\n1. Hz\n2. rad/s\n");
+    int to = get_user_input(2);
+    
+    double value = get_number("Enter value: ");
+    double result;
+    
+    if (from == to) {
+        result = value;
+    } else if (from == 1 && to == 2) {
+        result = value * 2.0 * M_PI;  /* Hz to rad/s */
+    } else if (from == 2 && to == 1) {
+        result = value / (2.0 * M_PI);  /* rad/s to Hz */
+    }
+    
+    const char *from_unit = "Hz";
+    switch (from) {
+        case 2:
+            from_unit = "rad/s";
+            break;
+        default:
+            break;
+    }
+
+    const char *to_unit = "Hz";
+    switch (to) {
+        case 2:
+            to_unit = "rad/s";
+            break;
+        default:
+            break;
+    }
+    printf("\n%.15g %s = %.15g %s\n", value, from_unit, result, to_unit);
+    Ans = result;
+    conversion_menu();
+}
+
 /* Power conversion: milliwatts to megawatts */
 void power_conversion(void) {
     static const unit_option unit_list[] = {
@@ -329,5 +371,94 @@ void power_conversion(void) {
     };
     run_unit_converter("Power Conversion", unit_list,
                        (int)(sizeof(unit_list) / sizeof(unit_list[0])));
+    conversion_menu();
+}
+
+/* Power & dBm menu */
+void power_dbm_menu(void) {
+    printf("\nPower Conversion\n");
+    printf("1. Power (mW/W/kW/MW)\n");
+    printf("2. dBm <-> W\n");
+    int choice = get_user_input(2);
+    
+    if (choice == 1) {
+        power_conversion();
+    } else {
+        dbm_power_conversion();
+    }
+}
+
+void temperature_conversion(void) {
+    printf("\nTemperature Conversion (C <-> F)\n");
+    display_current();
+    printf("\nFrom:\n1. Celsius (C)\n2. Fahrenheit (F)\n");
+    int from = get_user_input(2);
+    printf("\nTo:\n1. Celsius (C)\n2. Fahrenheit (F)\n");
+    int to = get_user_input(2);
+
+    double value = get_number("Enter value: ");
+    double result;
+
+    if (from == to) {
+        result = value;
+    } else if (from == 1 && to == 2) {
+        result = value * 9.0 / 5.0 + 32.0;  /* C to F */
+    } else if (from == 2 && to == 1) {
+        result = (value - 32.0) * 5.0 / 9.0;  /* F to C */
+    }
+
+    const char *from_unit = "C";
+    switch (from) {
+        case 2:
+            from_unit = "F";
+            break;
+        default:
+            break;
+    }
+
+    const char *to_unit = "C";
+    switch (to) {
+        case 2:
+            to_unit = "F";
+            break;
+        default:
+            break;
+    }
+    printf("\n%.15g %s = %.15g %s\n", value, from_unit, result, to_unit);
+    Ans = result;
+    conversion_menu();
+}
+
+/* Power level conversion: dBm <-> W */
+void dbm_power_conversion(void) {
+    printf("\nPower Level Conversion (dBm <-> W)\n");
+    display_current();
+    printf("\nFrom:\n1. dBm\n2. W\n");
+    int from = get_user_input(2);
+    printf("\nTo:\n1. dBm\n2. W\n");
+    int to = get_user_input(2);
+
+    double value, result;
+
+    if (from == to) {
+        value = get_number("Enter value: ");
+        result = value;
+    } else if (from == 1 && to == 2) {
+        value = get_number("Enter value in dBm: ");
+        result = pow(10.0, (value - 30.0) / 10.0);  /* dBm to W */
+        printf("\n%.15g dBm = %.15g W\n", value, result);
+    } else if (from == 2 && to == 1) {
+        do {
+            value = get_number("Enter value in W (>0): ");
+            if (value <= 0.0) printf("Invalid input. Must be > 0.\n");
+        } while (value <= 0.0);
+        result = 10.0 * log10(value) + 30.0;  /* W to dBm */
+        printf("\n%.15g W = %.15g dBm\n", value, result);
+    } else {
+        value = get_number("Enter value: ");
+        result = value;
+    }
+
+    Ans = result;
     conversion_menu();
 }
