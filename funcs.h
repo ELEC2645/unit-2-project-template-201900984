@@ -4,6 +4,7 @@
 #include <stdio.h> // for printf(), scanf()
 #include <stdlib.h> // for exit()
 #include <string.h> 
+#include <ctype.h> // for tolower()
 #include <math.h> 
 
 int get_user_input(int max_option);

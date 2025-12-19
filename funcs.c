@@ -53,9 +53,12 @@ double get_number(char *prompt) {
             buffer[strcspn(buffer, "\n")] = '\0';
             b = strtod(buffer, &endptr);
             if (endptr != buffer && *endptr == '\0') return b;
-            // Check for constants (case-insensitive)
-            if (strcasecmp(buffer, "pi") == 0) return M_PI;
-            if (strcasecmp(buffer, "e") == 0) return M_E;
+            // Check for constants (case-insensitive) - convert to lowercase
+            for (int i = 0; buffer[i]; i++) {
+                buffer[i] = tolower((unsigned char)buffer[i]);
+            }
+            if (strcmp(buffer, "pi") == 0) return M_PI;
+            if (strcmp(buffer, "e") == 0) return M_E;
         }
         printf("Invalid input. Try again.\n");
     }
