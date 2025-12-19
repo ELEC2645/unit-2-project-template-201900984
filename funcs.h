@@ -13,7 +13,6 @@ void select_calculator_item(int input);
 void print_calculator_menu(void);
 double get_number(char *prompt);
 void display_current(void);
-/* void go_back_to_main(void);  */
 void calculator_menu(void);
 
 void menu_item_1(void);
