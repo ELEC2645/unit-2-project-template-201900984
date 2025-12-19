@@ -11,7 +11,6 @@ int get_user_input(int max_option);
 void clear_ans(void);
 void select_calculator_item(int input);
 void print_calculator_menu(void);
-void get_two_numbers(double *a, double *b);
 double get_number(char *prompt);
 void display_current(void);
 /* void go_back_to_main(void);  */

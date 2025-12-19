@@ -16,12 +16,6 @@ void clear_ans(void) {
     Ans = 0.0;
 }
 
-/* Flush leftover input (currently unused) */
-static void flush_input_buffer(void) {
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF) {}
-}
-
 /* Get validated integer input from user within range [1, max_option] */
 int get_user_input(int max_option) {
     char buffer[64];
@@ -59,31 +53,6 @@ double get_number(char *prompt) {
             }
             if (strcmp(buffer, "pi") == 0) return M_PI;
             if (strcmp(buffer, "e") == 0) return M_E;
-        }
-        printf("Invalid input. Try again.\n");
-    }
-}
-
-/* Get two numbers from user (legacy function, not currently used) */
-void get_two_numbers(double *a, double *b) {
-    char buffer[64], *endptr;
-
-    while (1) {
-        printf("Enter first number: ");
-        if (fgets(buffer, sizeof buffer, stdin)) {
-            buffer[strcspn(buffer, "\n")] = '\0';
-            *a = strtod(buffer, &endptr);
-            if (endptr != buffer && *endptr == '\0') break;
-        }
-        printf("Invalid input. Try again.\n");
-    }
-
-    while (1) {
-        printf("Enter second number: ");
-        if (fgets(buffer, sizeof buffer, stdin)) {
-            buffer[strcspn(buffer, "\n")] = '\0';
-            *b = strtod(buffer, &endptr);
-            if (endptr != buffer && *endptr == '\0') break;
         }
         printf("Invalid input. Try again.\n");
     }
